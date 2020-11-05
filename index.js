@@ -1,10 +1,15 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const pug = require('pug');
+const userRouter = require('./routes/user');
 
 const PORT = 3001;
 const app = express();
+
 app.set('view engine', 'pug');
 app.set('views', './views');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.render('index', {
@@ -12,27 +17,8 @@ app.get('/', (req, res) => {
     });
 });
 
-var users = [
-    {id: 1, name: 'Biden'},
-    {id: 2, name: 'Trump'}
-]
-
-app.get('/users', (req, res) => {
-    res.render('users/index', {
-        users: users
-    })
-});
-
-app.get('/users/search', (req, res) => {
-    const userName = req.query.name;
-    const getUserByName = users.filter((user) => {
-        return user.name.toLowerCase().indexOf(userName.toLowerCase()) >= 0;
-    })
-    res.render('users/index', {
-        users: getUserByName
-    })
-});
+app.use('/users', userRouter);
 
 app.listen(PORT, () => {
     console.log(`server listening on port ${PORT}`);
-})
+});
