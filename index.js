@@ -26,7 +26,7 @@ app.get('/users', (req, res) => {
 app.get('/users/search', (req, res) => {
     const userName = req.query.name;
     const getUserByName = users.filter((user) => {
-        return user.name === userName;
+        return user.name.toLowerCase().indexOf(userName.toLowerCase()) >= 0;
     })
     res.render('users/index', {
         users: getUserByName

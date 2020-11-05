@@ -1,4 +1,14 @@
 h2 Users
+form(action="/users/search" method='GET')
+  input(type="text" name='name' id='input-field')
+  button(id='search') Search
 ul  
   each user in users
     li= user.name
+script.
+  let searchInput = document.getElementById('input-field');
+  const value = searchInput.value;
+  searchInput.addEventListener('change', function() {
+    sessionStorage.setItem('draft', searchInput.value)
+  })
+  searchInput.value = sessionStorage.getItem('draft');
